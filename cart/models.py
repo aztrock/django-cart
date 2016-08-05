@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 class Cart(models.Model):
     creation_date = models.DateTimeField(verbose_name=_('creation date'))
     checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
+    ref = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Reference'))
 
     class Meta:
         verbose_name = _('cart')

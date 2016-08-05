@@ -10,23 +10,26 @@ class ItemDoesNotExist(Exception):
     pass
 
 class Cart:
-    def __init__(self, request):
+    def __init__(self, request, ref=None):
         cart_id = request.session.get(CART_ID)
         if cart_id:
             try:
                 cart = models.Cart.objects.get(id=cart_id, checked_out=False)
             except models.Cart.DoesNotExist:
-                cart = self.new(request)
+                cart = self.new(request, ref)
         else:
-            cart = self.new(request)
+            cart = self.new(request, ref)
         self.cart = cart
 
     def __iter__(self):
         for item in self.cart.item_set.all():
             yield item
 
-    def new(self, request):
-        cart = models.Cart(creation_date=datetime.datetime.now())
+    def new(self, request, ref=None):
+        if ref:
+           cart = models.Cart(creation_date=datetime.datetime.now())
+        else:
+           cart = models.Cart(creation_date=datetime.datetime.now(), ref=ref)
         cart.save()
         request.session[CART_ID] = cart.id
         return cart
