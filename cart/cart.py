@@ -11,10 +11,10 @@ class ItemDoesNotExist(Exception):
 
 class Cart:
     def __init__(self, request, ref=None):
-        cart_id = request.session.get(CART_ID)
-        if cart_id:
+        self.cart_id = request.session.get(CART_ID)
+        if self.cart_id:
             try:
-                cart = models.Cart.objects.get(id=cart_id, checked_out=False)
+                cart = models.Cart.objects.get(id=self.cart_id, checked_out=False)
             except models.Cart.DoesNotExist:
                 cart = self.new(request, ref)
         else:
@@ -32,6 +32,7 @@ class Cart:
            cart = models.Cart(creation_date=datetime.datetime.now(), ref=ref)
         cart.save()
         request.session[CART_ID] = cart.id
+        self.cart_id = cart.id
         return cart
 
     def add(self, product, unit_price, quantity=1):
@@ -90,6 +91,9 @@ class Cart:
         for item in self.cart.item_set.all():
             result += item.total_price
         return result
+
+    def get_id(self):
+        return self.cart_id
 
     def clear(self):
         for item in self.cart.item_set.all():
