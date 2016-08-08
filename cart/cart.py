@@ -93,7 +93,7 @@ class Cart:
         return result
 
     def get_id(self):
-        return self.cart_id.pk
+        return self.cart_id
 
     def clear(self):
         for item in self.cart.item_set.all():
