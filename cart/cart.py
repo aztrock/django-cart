@@ -27,9 +27,11 @@ class Cart:
 
     def new(self, request, ref=None):
         if ref:
-           cart = models.Cart(creation_date=datetime.datetime.now())
-        else:
            cart = models.Cart(creation_date=datetime.datetime.now(), ref=ref)
+        else:
+           cart = models.Cart(creation_date=datetime.datetime.now())
+        if hasattr(request, 'user'):
+            cart.user = request.user
         cart.save()
         request.session[CART_ID] = cart.id
         self.cart_id = cart.id

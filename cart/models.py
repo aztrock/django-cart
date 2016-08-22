@@ -1,12 +1,19 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 
 
 class Cart(models.Model):
     creation_date = models.DateTimeField(verbose_name=_('creation date'))
     checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
     ref = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Reference'))
+    user = models.ForeignKey(
+            settings.AUTH_USER_MODEL,
+            models.SET_NULL,
+            null=True,
+            blank=True
+        )
 
     class Meta:
         verbose_name = _('cart')
