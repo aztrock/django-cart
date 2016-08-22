@@ -95,6 +95,9 @@ class Cart:
     def get_id(self):
         return self.cart_id
 
+    def destroy(self):
+        del self
+
     def clear(self):
         for item in self.cart.item_set.all():
             item.delete()
