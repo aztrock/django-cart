@@ -12,8 +12,7 @@ class Cart(models.Model):
             settings.AUTH_USER_MODEL,
             models.SET_NULL,
             null=True,
-            blank=True,
-            on_delete=models.CASCADE
+            blank=True
         )
 
     class Meta:
